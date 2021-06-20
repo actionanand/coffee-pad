@@ -2,34 +2,44 @@ class DocumentEditorView extends Views.BaseView
   constructor: ->
     super $("#canvas"), (doc = false) =>
       output = "
-        <label>title</label>
-        <input type='text' name='title' />
-        <label>content</label>
-        <textarea name='content'></textarea>
-        <label>category</label>
-        <input type='text' name='category' />
+        <label class='formitem'>title</label>
+        <input class='formitem' type='text' name='title' />
+        <label class='formitem'>content</label>
+        <div name='content'></div>
+        <label class='formitem'>category</label>
+        <select class='formitem' name='category'></select><button data-action='add-category'>+</button>
         <div class='actions'>
-          <button data-action='save'>save</button>
-          <button data-action='close'>cancel</button>
+          <button class='formitem' data-action='save'>save</button>
+          <button class='formitem' data-action='close'>cancel</button>
         </div>
       "
 
+      $output = $("<div>")
+      $output.html(output)
+
+      $output.find("[name='content']").summernote {
+        height: 400
+      }
+
       if doc
-        $output = $("<div>")
-        $output.html(output)
         $output.find("input[name='title']").val doc.title
-        $output.find("textarea").val doc.content
-        $output.find("input[name='category']").val doc.category
+        $output.find("[name='content']").code doc.content
+        $output.find("[name='category']").val doc.category
         @id = doc.id
         @mode = 'update'
         output = $output
       else
         @mode = 'create'
 
-      output
+      $output
 
   render: (doc) ->
     super doc
+    categories = new Models.CategoryModel().all()
+    console.log categories
+    for id of categories
+      console.log categories[id].title
+      $("select[name='category']").append("<option>#{categories[id].title}</option")
     @bind()
 
   close: ->
@@ -45,18 +55,27 @@ class DocumentEditorView extends Views.BaseView
         when "save"
           record = 
             title: @element.find("input[name='title']").val()
-            content: @element.find("textarea").val()
-            category: @element.find("input[name='category']").val()
+            content: @element.find("[name='content']").code()
+            category: @element.find("[name='category']").val()
 
           if @mode is 'update'
             record.id = @id
-            Controllers.DocumentController.update record
+            EventEmitter.trigger 'document:update', record
           else
-            Controllers.DocumentController.store record
+            EventEmitter.trigger 'document:store', record
+
+          if @categoryMode is 'add'
+            EventEmitter.trigger 'category:store', { title: record.category }
 
           @close()
           alert "Document saved"
+        when "add-category"
+          select = $("select[name='category']")
+          textbox = $("<input name='category' />")
 
+          select.replaceWith textbox
+          $("button[data-action='add-category']").remove()
+          @categoryMode = 'add'
         when "close"
           @close()
 

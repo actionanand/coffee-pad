@@ -1,4 +1,4 @@
-{exec, spawn} = require "child_process"
+{spawn} = require "child_process"
 
 # watches files for changes, and compiles them to a single file
 task 'watch', 'live compile', ->
@@ -9,7 +9,3 @@ task 'watch', 'live compile', ->
 
   source.stdout.on "error", (error) ->
     console.log stdout.toString().trim()
-
-task 'compile', 'compile', ->
-  exec "coffee --join dist/app.js -c src", ->
-    console.log 'Done'

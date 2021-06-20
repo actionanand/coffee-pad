@@ -4,6 +4,7 @@
 
 $ ->
   Controllers.DocumentController.init()
+  Controllers.CategoryController.init()
 
   $("#sidebar a").on "click", (event) ->
     event.preventDefault()
