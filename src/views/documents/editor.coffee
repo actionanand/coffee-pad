@@ -4,10 +4,13 @@ class DocumentEditorView extends Views.BaseView
       output = "
         <label class='formitem'>title</label>
         <input class='formitem' type='text' name='title' />
+
         <label class='formitem'>content</label>
         <div name='content'></div>
+
         <label class='formitem'>category</label>
         <select class='formitem' name='category'></select><button data-action='add-category'>+</button>
+
         <div class='actions'>
           <button class='formitem' data-action='save'>save</button>
           <button class='formitem' data-action='close'>cancel</button>

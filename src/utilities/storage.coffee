@@ -6,5 +6,3 @@ class Storage
     localStorage.setItem key, JSON.stringify(value)
 
 @Storage = Storage
-
-# @function is static function
