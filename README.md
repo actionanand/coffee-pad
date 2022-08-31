@@ -3,7 +3,7 @@
 
 ## How to run the app
 ```bash
-cake watch
+yarn run serve:coffee
 ```
 
 ## Resources
