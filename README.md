@@ -3,7 +3,8 @@
 
 ## How to run the app
 ```bash
-yarn run serve:coffee
+$ yarn run serve:coffee
+$ yarn serve
 ```
 
 ## Resources
