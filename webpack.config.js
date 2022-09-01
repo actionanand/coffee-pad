@@ -2,8 +2,11 @@ const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
+
 module.exports = {
-  entry: './main.js',
+  // entry: './main.js',
+  context: __dirname,
+  entry: path.join(__dirname, 'main.js'),
   output: {
     path: path.resolve(__dirname, 'public'),
     filename: 'index.js'
@@ -19,10 +22,10 @@ module.exports = {
     }),
     new CopyWebpackPlugin({
       patterns: [
-        { from: './dist', to: './dist' }, // output path is 'public' folder, already defined.
+        { from: './vendor/vendor.js', to: './' }, // output path is 'public' folder, already defined.
         { from: './assets', to: './assets' },
         // { from: './src/styles.css', to: './' }
       ]
-    })
+    }),
   ]
 }
